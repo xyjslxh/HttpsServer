@@ -25,16 +25,15 @@
 	<!-- 使用Spring的Annotation的配置 -->
 	<context:annotation-config />
 
-	<context:component-scan base-package="com.vtron.lc">
+	<context:component-scan base-package="com.vtron.it">
 		<context:exclude-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
 
 	<!-- 开启这个配置，spring才能识别@Scheduled注解 -->
 	<!-- <task:annotation-driven /> -->
-	<task:annotation-driven scheduler="qbScheduler"
-		mode="proxy" />
-	<task:scheduler id="qbScheduler" pool-size="5" />
+	<!-- <task:annotation-driven scheduler="qbScheduler" mode="proxy" /> <task:scheduler 
+		id="qbScheduler" pool-size="5" /> -->
 
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -53,14 +52,14 @@
 		<!-- 配置自动扫描，扫描model类使用注解的类 -->
 		<property name="packagesToScan">
 			<list>
-				<value>com.vtron.lc.model</value>
+				<value>com.vtron.it.model</value>
 			</list>
 		</property>
 		<!-- 配置hibernate的属性 -->
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.jdbc.batch_size">20</prop>
 				<prop key="hibernate.proxool.xml">proxool.xml</prop>
 				<prop key="hibernate.proxool.pool_alias">lcdb</prop>
@@ -87,4 +86,25 @@
 	<aop:aspectj-autoproxy proxy-target-class="true" />
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
+	<bean id="threadPoolTaskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数，默认为1 -->
+		<property name="corePoolSize" value="10" />
+		<!-- 最大线程数，默认为Integer.MAX_VALUE -->
+		<property name="maxPoolSize" value="50" />
+
+		<!-- 队列最大长度，一般需要设置值: 大于等于notifyScheduledMainExecutor.maxNum；默认为Integer.MAX_VALUE -->
+		<property name="queueCapacity" value="50" />
+
+		<!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+		<property name="keepAliveSeconds" value="300" />
+		<!-- 线程池对拒绝任务（无线程可用）的处理策略，目前只支持AbortPolicy、CallerRunsPolicy；默认为后者 -->
+		<property name="rejectedExecutionHandler">
+			<!-- AbortPolicy:直接抛出java.util.concurrent.RejectedExecutionException异常 -->
+			<!-- CallerRunsPolicy:主线程直接执行该任务，执行完之后尝试添加下一个任务到线程池中，可以有效降低向线程池内添加任务的速度 -->
+			<!-- DiscardOldestPolicy:抛弃旧的任务、暂不支持；会导致被丢弃的任务无法再次被执行 -->
+			<!-- DiscardPolicy:抛弃当前任务、暂不支持；会导致被丢弃的任务无法再次被执行 -->
+			<bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy" />
+		</property>
+	</bean>
 </beans>

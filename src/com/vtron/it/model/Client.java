@@ -1,4 +1,4 @@
-package com.vtron.lc.model;
+package com.vtron.it.model;
 
 // Generated 2015-4-16 16:43:36 by Hibernate Tools 3.4.0.CR1
 

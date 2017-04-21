@@ -1,4 +1,4 @@
-package com.vtron.lc.common;
+package com.vtron.it.common;
 
 import java.math.BigDecimal;
 import java.util.Collection;

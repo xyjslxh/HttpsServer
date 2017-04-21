@@ -1,4 +1,4 @@
-package com.vtron.lc.common;
+package com.vtron.it.common;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

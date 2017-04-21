@@ -1,4 +1,4 @@
-package com.vtron.lc.dao;
+package com.vtron.it.dao;
 
 // Generated 2015-4-17 9:12:04 by Hibernate Tools 3.4.0.CR1
 
@@ -14,8 +14,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.vtron.lc.common.ObjectUtils;
-import com.vtron.lc.model.Client;
+import com.vtron.it.common.ObjectUtils;
+import com.vtron.it.model.Client;
 
 @Repository
 public class ClientDAO {
@@ -96,14 +96,8 @@ public class ClientDAO {
 	}
 
 	public Client findById(int id) {
-		log.debug("getting Client instance with id: " + id);
 		try {
 			Client instance = (Client) sessionFactory.getCurrentSession().get(Client.class, id);
-			if (instance == null) {
-				log.debug("get successful, no instance found");
-			} else {
-				log.debug("get successful, instance found");
-			}
 			return instance;
 		} catch (RuntimeException re) {
 			log.error("get failed", re);
@@ -132,6 +126,22 @@ public class ClientDAO {
 			Query query = sessionFactory.getCurrentSession().createQuery(hql);
 			query.setString(0, clientId);
 			query.setString(1, key);
+			List<Client> list = query.list();
+			if (ObjectUtils.isNotEmpty(list)) {
+				return list.get(0);
+			}
+		} catch (RuntimeException re) {
+			throw re;
+		}
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	public Client findByClientId(String clientId) {
+		try {
+			String hql = " FROM Client WHERE clientId = ?";
+			Query query = sessionFactory.getCurrentSession().createQuery(hql);
+			query.setString(0, clientId);
 			List<Client> list = query.list();
 			if (ObjectUtils.isNotEmpty(list)) {
 				return list.get(0);

@@ -20,7 +20,7 @@
            http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 	<!-- 使用注解来配置Spring MVC -->
 	<mvc:annotation-driven />
-	<context:component-scan base-package="com.vtron.lc.controller"
+	<context:component-scan base-package="com.vtron.it.controller"
 		use-default-filters="false">
 		<context:include-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
@@ -55,11 +55,23 @@
 		</property>
 	</bean>
 
-	<!-- SpringMVC中的上传文件配置，在这里配置上传文件大小限制不够灵活，建议使用jQuery框架来配置，这样可以节省服务器的压力 -->
-	<bean id="multipartResolver"
-		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<property name="defaultEncoding" value="utf-8"></property>
-		<property name="maxUploadSize" value="-1"></property>
-		<property name="maxInMemorySize" value="40960"></property>
+
+<!-- 	<bean id="utf8Charset" class="java.nio.charset.Charset"
+		factory-method="forName">
+		<constructor-arg value="UTF-8" />
 	</bean>
+
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<constructor-arg ref="utf8Charset" />
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven> -->
+
+	<!-- SpringMVC中的上传文件配置，在这里配置上传文件大小限制不够灵活，建议使用jQuery框架来配置，这样可以节省服务器的压力 -->
+	<!-- <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"> 
+		<property name="defaultEncoding" value="utf-8"></property> <property name="maxUploadSize" 
+		value="-1"></property> <property name="maxInMemorySize" value="40960"></property> 
+		</bean> -->
 </beans>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-    <wb-module deploy-name="HttpsServer">
+    <wb-module deploy-name="InternationalTrade">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <property name="context-root" value="HttpsServer"/>
-        <property name="java-output-path" value="/HttpsServer/build/classes"/>
+        <property name="java-output-path" value="/InternationalTrade/build/classes"/>
+        <property name="context-root" value="InternationalTrade"/>
     </wb-module>
 </project-modules>
